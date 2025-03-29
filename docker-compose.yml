@@ -1,28 +1,58 @@
-version: '3'
+version: '3.8'
+
 services:
   user:
     build: ./user-svc
     ports:
       - "8001:8001"
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=pass
+      - DB_NAME=userdb
+
   order:
     build: ./order-svc
     ports:
       - "8002:8002"
     depends_on:
-      - user
-      - mysql
+      postgres:
+        condition: service_healthy
+      user:
+        condition: service_started
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=pass
+      - DB_NAME=orderdb
+
   notify:
     build: ./notification-svc
     ports:
       - "8003:8003"
+    depends_on:
+      - order
 
   postgres:
-    image: postgres
+    image: postgres:15
+    restart: always
     environment:
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: pass
-  mysql:
-    image: mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: pass
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
