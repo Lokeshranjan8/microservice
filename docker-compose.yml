@@ -13,7 +13,7 @@ services:
       - DB_PORT=5432
       - DB_USER=postgres
       - DB_PASSWORD=pass
-      - DB_NAME=userdb
+      - DB_NAME=user_db
 
   order:
     build: ./order-svc
@@ -29,7 +29,7 @@ services:
       - DB_PORT=5432
       - DB_USER=postgres
       - DB_PASSWORD=pass
-      - DB_NAME=orderdb
+      - DB_NAME=order_db
 
   notify:
     build: ./notification-svc
