@@ -29,17 +29,17 @@ cd microservices
 
 ```
 
-    1) Ensure PostgreSQL databases (user_db, order_db, etc.) are     created via CLI or pgAdmin.
+1) Ensure PostgreSQL databases (user_db, order_db, etc.) are     created via CLI or pgAdmin.
 
-    2) Run each service individually:
+2) Run each service individually:
 
 ```bash
 cd user-svc && keploy record -c "go run main.go"
 # Repeat for each service
 ```
-    Test endpoints using Postman or curl.
+Test endpoints using Postman or curl.
 
-    Keploy will auto-generate test cases in /keploy/test-set-*.
+Keploy will auto-generate test cases in /keploy/test-set-*.
 
 ## Running Tests
 
