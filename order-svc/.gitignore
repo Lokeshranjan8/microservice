@@ -1,5 +1,3 @@
-.env
-*.env
 # Keploy test data and logs
 /keploy/test-set*
 /keploy/test-report*
